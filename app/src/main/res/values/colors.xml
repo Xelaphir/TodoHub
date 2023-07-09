@@ -2,4 +2,8 @@
 <resources>
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
+    <color name="orange">#f79817</color>
+    <color name="spear_shaft">#8C4E03</color>
+    <color name="blacked_brown">#402401</color>
+    <color name="bleached_silk">#262626</color>
 </resources>
