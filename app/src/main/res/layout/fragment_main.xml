@@ -55,7 +55,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior">
 
         <com.google.android.material.tabs.TabLayout
-            android:id="@+id/category_tab_layout"
+            android:id="@+id/group_tab_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:tabMode="auto"
@@ -65,7 +65,7 @@
             android:background="@color/bleached_silk"/>
 
         <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/category_view_pager2"
+            android:id="@+id/group_view_pager2"
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:layout_weight="1"/>
