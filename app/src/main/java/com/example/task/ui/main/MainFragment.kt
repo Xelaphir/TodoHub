@@ -1,5 +1,6 @@
 package com.example.task.ui.main
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -18,6 +19,8 @@ import com.example.task.data.task.Task
 import com.example.task.databinding.CreateGroupDialogBinding
 import com.example.task.databinding.CreateTaskDialogBinding
 import com.example.task.databinding.FragmentMainBinding
+import com.example.task.ui.detail.TaskDetailFragment
+import com.example.task.ui.navigator.Navigator
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayoutMediator
 import java.util.UUID
@@ -26,9 +29,20 @@ class MainFragment : Fragment(), TasksListener {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by activityViewModels()
+    private var navigator: Navigator? = null
     private val groupAdapter: GroupAdapter = GroupAdapter(this)
     private lateinit var createTaskDialog: BottomSheetDialog
     private lateinit var createGroupDialog: BottomSheetDialog
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        navigator = context as Navigator
+    }
+
+    override fun onDetach() {
+        super.onDetach()
+        navigator = null
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -195,8 +209,9 @@ class MainFragment : Fragment(), TasksListener {
         viewModel.updateTask(task)
     }
 
-    override fun taskItemPressed(task: UUID) {
-
+    override fun taskItemPressed(id: UUID) {
+        val f = TaskDetailFragment.newInstance(id)
+        navigator?.launch(f)
     }
 
 }

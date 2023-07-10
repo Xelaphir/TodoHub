@@ -10,6 +10,6 @@ interface TasksListener {
 
     fun updateTask(task: Task)
 
-    fun taskItemPressed(task: UUID)
+    fun taskItemPressed(id: UUID)
 
 }
