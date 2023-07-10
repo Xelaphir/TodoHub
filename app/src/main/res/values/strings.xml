@@ -4,4 +4,6 @@
     <string name="create">Create</string>
     <string name="to">To</string>
     <string name="Do">Do</string>
+    <string name="create_task">Create task</string>
+    <string name="create_group">Create group</string>
 </resources>
