@@ -31,10 +31,10 @@ interface TaskDao {
     fun getTask(id: UUID): LiveData<Task?>
 
     @Query("update task set isCompleted = 1 where parent=(:parentId)")
-    fun markSubtasksAsCompleted(parentId: UUID)
+    suspend fun markSubtasksAsCompleted(parentId: UUID)
 
     @Query("delete from task where parent=(:parentId)")
-    fun deleteSubtasks(parentId: UUID)
+    suspend fun deleteSubtasks(parentId: UUID)
 
     @Insert
     suspend fun addTask(task: Task)
