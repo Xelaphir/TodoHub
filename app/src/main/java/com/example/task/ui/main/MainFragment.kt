@@ -11,6 +11,7 @@ import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import com.example.task.R
+import com.example.task.databinding.CreateGroupDialogBinding
 import com.example.task.databinding.CreateTaskDialogBinding
 import com.example.task.databinding.FragmentMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
@@ -19,6 +20,7 @@ class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
     private lateinit var createTaskDialog: BottomSheetDialog
+    private lateinit var createGroupDialog: BottomSheetDialog
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +32,7 @@ class MainFragment : Fragment() {
 
         initCreateFab()
         initCreateTaskDialog()
+        initCreateGroupDialog()
 
         return binding.root
 
@@ -46,7 +49,7 @@ class MainFragment : Fragment() {
                     true
                 }
                 R.id.create_group -> {
-                    Toast.makeText(requireContext(), "Create task", Toast.LENGTH_SHORT).show()
+                    createGroupDialog.show()
                     true
                 }
                 else -> false
@@ -102,6 +105,37 @@ class MainFragment : Fragment() {
         }
 
         createTaskDialog.setContentView(dialogBinding.root)
+    }
+
+    private fun initCreateGroupDialog() {
+
+        createGroupDialog = BottomSheetDialog(requireContext(), R.style.DialogStyle)
+        createGroupDialog.window?.addFlags(WindowManager.LayoutParams.FLAG_DIM_BEHIND)
+
+        val dialogBinding = CreateGroupDialogBinding.inflate(LayoutInflater.from(requireContext()), null, false)
+
+        dialogBinding.groupNameEditText.addTextChangedListener(object : TextWatcher {
+            override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+            override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {}
+
+            override fun afterTextChanged(s: Editable?) {
+                dialogBinding.saveGroupButton.isEnabled = s?.isNotBlank() == true
+            }
+        })
+
+        dialogBinding.saveGroupButton.setOnClickListener {
+            Toast.makeText(requireContext(), "Create", Toast.LENGTH_SHORT).show()
+            createGroupDialog.dismiss()
+        }
+        dialogBinding.groupNameEditText.requestFocus()
+
+        createGroupDialog.setOnDismissListener {
+            dialogBinding.apply {
+                groupNameEditText.text.clear()
+            }
+        }
+
+        createGroupDialog.setContentView(dialogBinding.root)
     }
 
 }
