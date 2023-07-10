@@ -4,6 +4,7 @@ import androidx.lifecycle.LiveData
 import androidx.room.Dao
 import androidx.room.Delete
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import com.example.task.data.group.Group
 
@@ -13,7 +14,7 @@ interface GroupDao {
     @Query("select * from `group`")
     fun getGroups(): LiveData<List<Group>>
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun addGroup(group: Group)
 
     @Delete

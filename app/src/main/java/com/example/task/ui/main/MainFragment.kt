@@ -12,6 +12,7 @@ import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.task.R
+import com.example.task.data.group.BASE_GROUPS
 import com.example.task.data.group.Group
 import com.example.task.data.task.Task
 import com.example.task.databinding.CreateGroupDialogBinding
@@ -27,6 +28,13 @@ class MainFragment : Fragment(), TasksListener {
     private val groupAdapter: GroupAdapter = GroupAdapter(this)
     private lateinit var createTaskDialog: BottomSheetDialog
     private lateinit var createGroupDialog: BottomSheetDialog
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        BASE_GROUPS.forEach {
+            viewModel.addGroup(Group(it))
+        }
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,

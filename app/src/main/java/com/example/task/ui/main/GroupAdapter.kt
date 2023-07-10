@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task.R
+import com.example.task.data.group.BASE_GROUPS
 import com.example.task.data.group.Group
 import com.example.task.databinding.ItemGroupBinding
 
