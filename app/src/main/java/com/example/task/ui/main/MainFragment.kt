@@ -3,6 +3,7 @@ package com.example.task.ui.main
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,10 +16,13 @@ import com.example.task.databinding.CreateGroupDialogBinding
 import com.example.task.databinding.CreateTaskDialogBinding
 import com.example.task.databinding.FragmentMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
+import com.google.android.material.tabs.TabLayout.Tab
+import com.google.android.material.tabs.TabLayoutMediator
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private val groupAdapter: GroupAdapter = GroupAdapter()
     private lateinit var createTaskDialog: BottomSheetDialog
     private lateinit var createGroupDialog: BottomSheetDialog
 
@@ -30,12 +34,21 @@ class MainFragment : Fragment() {
 
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
+        initViewPager()
         initCreateFab()
         initCreateTaskDialog()
         initCreateGroupDialog()
 
         return binding.root
 
+    }
+
+    private fun initViewPager() {
+        binding.groupViewPager2.adapter = groupAdapter
+
+        TabLayoutMediator(binding.groupTabLayout, binding.groupViewPager2) {tab, position ->
+            tab.text = groupAdapter.groups[position]
+        }.attach()
     }
 
     private fun initCreateFab() {
@@ -125,6 +138,8 @@ class MainFragment : Fragment() {
 
         dialogBinding.saveGroupButton.setOnClickListener {
             Toast.makeText(requireContext(), "Create", Toast.LENGTH_SHORT).show()
+            groupAdapter.addGroup(dialogBinding.groupNameEditText.text.toString())
+            initViewPager()
             createGroupDialog.dismiss()
         }
         dialogBinding.groupNameEditText.requestFocus()
