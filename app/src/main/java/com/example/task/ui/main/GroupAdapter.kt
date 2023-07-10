@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task.R
+import com.example.task.data.group.Group
 import com.example.task.databinding.ItemGroupBinding
 
 class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
@@ -15,7 +16,7 @@ class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
         private val binding = ItemGroupBinding.bind(view)
         private val adapter = TasksAdapter()
 
-        fun bind(group: String) {
+        fun bind(group: Group) {
             val layoutManager = LinearLayoutManager(binding.root.context)
             binding.groupRecyclerView.layoutManager = layoutManager
             binding.groupRecyclerView.adapter = adapter
@@ -23,14 +24,14 @@ class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
         }
     }
 
-     var groups: MutableList<String> = mutableListOf()
+     var groups: MutableList<Group> = mutableListOf()
         set(value) {
             if (value == field) return
             field = value
             notifyDataSetChanged()
         }
 
-    fun addGroup(group: String) {
+    fun addGroup(group: Group) {
         groups.add(group)
         notifyDataSetChanged()
     }

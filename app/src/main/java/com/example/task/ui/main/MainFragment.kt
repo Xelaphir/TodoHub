@@ -3,7 +3,6 @@ package com.example.task.ui.main
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,9 @@ import android.view.WindowManager
 import android.widget.Toast
 import androidx.appcompat.widget.PopupMenu
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.activityViewModels
 import com.example.task.R
+import com.example.task.data.group.Group
 import com.example.task.databinding.CreateGroupDialogBinding
 import com.example.task.databinding.CreateTaskDialogBinding
 import com.example.task.databinding.FragmentMainBinding
@@ -22,6 +23,7 @@ import com.google.android.material.tabs.TabLayoutMediator
 class MainFragment : Fragment() {
 
     private lateinit var binding: FragmentMainBinding
+    private val viewModel: MainViewModel by activityViewModels()
     private val groupAdapter: GroupAdapter = GroupAdapter()
     private lateinit var createTaskDialog: BottomSheetDialog
     private lateinit var createGroupDialog: BottomSheetDialog
@@ -34,7 +36,7 @@ class MainFragment : Fragment() {
 
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        initViewPager(0)
+        initViewPager()
         initCreateFab()
         initCreateTaskDialog()
         initCreateGroupDialog()
@@ -43,11 +45,20 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun initViewPager(pos: Int) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        viewModel.groups.observe(viewLifecycleOwner) {
+            groupAdapter.groups = it.toMutableList()
+            initViewPager()
+        }
+    }
+
+    private fun initViewPager() {
         binding.groupViewPager2.adapter = groupAdapter
 
         TabLayoutMediator(binding.groupTabLayout, binding.groupViewPager2) {tab, position ->
-            tab.text = groupAdapter.groups[position]
+            tab.text = groupAdapter.groups[position].name
         }.attach()
     }
 
@@ -138,8 +149,10 @@ class MainFragment : Fragment() {
 
         dialogBinding.saveGroupButton.setOnClickListener {
             Toast.makeText(requireContext(), "Create", Toast.LENGTH_SHORT).show()
-            groupAdapter.addGroup(dialogBinding.groupNameEditText.text.toString())
-            initViewPager(-1)
+            val group = Group(
+                name = dialogBinding.groupNameEditText.text.toString()
+            )
+            viewModel.addGroup(group)
             createGroupDialog.dismiss()
         }
         dialogBinding.groupNameEditText.requestFocus()
