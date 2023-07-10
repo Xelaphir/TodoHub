@@ -23,8 +23,7 @@ class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
         }
     }
 
-    private var groups: List<String> = mutableListOf()
-        get() = field.toList()
+     var groups: MutableList<String> = mutableListOf()
         set(value) {
             if (value == field) return
             field = value
@@ -32,7 +31,7 @@ class GroupAdapter : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
         }
 
     fun addGroup(group: String) {
-        groups.toMutableList().add(group)
+        groups.add(group)
         notifyDataSetChanged()
     }
 
