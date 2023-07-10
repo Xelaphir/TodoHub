@@ -34,7 +34,7 @@ class MainFragment : Fragment() {
 
         binding = FragmentMainBinding.inflate(inflater, container, false)
 
-        initViewPager()
+        initViewPager(0)
         initCreateFab()
         initCreateTaskDialog()
         initCreateGroupDialog()
@@ -43,7 +43,7 @@ class MainFragment : Fragment() {
 
     }
 
-    private fun initViewPager() {
+    private fun initViewPager(pos: Int) {
         binding.groupViewPager2.adapter = groupAdapter
 
         TabLayoutMediator(binding.groupTabLayout, binding.groupViewPager2) {tab, position ->
@@ -139,7 +139,7 @@ class MainFragment : Fragment() {
         dialogBinding.saveGroupButton.setOnClickListener {
             Toast.makeText(requireContext(), "Create", Toast.LENGTH_SHORT).show()
             groupAdapter.addGroup(dialogBinding.groupNameEditText.text.toString())
-            initViewPager()
+            initViewPager(-1)
             createGroupDialog.dismiss()
         }
         dialogBinding.groupNameEditText.requestFocus()
