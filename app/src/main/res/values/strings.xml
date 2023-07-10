@@ -8,4 +8,5 @@
     <string name="create_group">Create group</string>
     <string name="enter_task">Enter task</string>
     <string name="enter_description">Enter description</string>
+    <string name="enter_group_name">Enter group name</string>
 </resources>
