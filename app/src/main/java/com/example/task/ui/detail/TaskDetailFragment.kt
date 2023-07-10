@@ -180,7 +180,7 @@ class TaskDetailFragment : Fragment(), SubtasksListener {
                 description = dialogBinding.descriptionEditText.text.toString(),
                 isFavorite = dialogBinding.addToFavoriteCheckBox.isChecked,
                 isCompleted = false,
-                parent = null,
+                parent = this.task.id,
                 group = ""
             )
             viewModel.addSubtask(task)
