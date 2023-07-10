@@ -33,6 +33,14 @@ class MainViewModel : ViewModel() {
         tasksDataSource.add(task)
     }
 
+    fun updateTask(task: Task) = viewModelScope.launch {
+        tasksDataSource.updateTask(task)
+    }
+
+    fun deleteTask(task: Task) = viewModelScope.launch {
+        tasksDataSource.removeTask(task)
+    }
+
     fun getTasksByGroup(group: Group, adapter: TasksAdapter, lifecycleOwner: LifecycleOwner) = viewModelScope.launch() {
 
         val liveData = when (group.name) {

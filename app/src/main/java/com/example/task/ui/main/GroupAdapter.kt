@@ -12,12 +12,12 @@ import com.example.task.databinding.ItemGroupBinding
 
 class GroupAdapter(private val listener: TasksListener) : RecyclerView.Adapter<GroupAdapter.GroupViewHolder>() {
 
-    class GroupViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    class GroupViewHolder(view: View, private val listener: TasksListener) : RecyclerView.ViewHolder(view) {
 
         private val binding = ItemGroupBinding.bind(view)
-        private val adapter = TasksAdapter()
+        private val adapter = TasksAdapter(listener)
 
-        fun bind(group: Group, listener: TasksListener) {
+        fun bind(group: Group) {
             val layoutManager = LinearLayoutManager(binding.root.context)
             binding.groupRecyclerView.layoutManager = layoutManager
             binding.groupRecyclerView.adapter = adapter
@@ -40,12 +40,12 @@ class GroupAdapter(private val listener: TasksListener) : RecyclerView.Adapter<G
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): GroupViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_group, parent, false)
-        return GroupViewHolder(view)
+        return GroupViewHolder(view, listener)
     }
 
     override fun getItemCount(): Int = groups.size
 
     override fun onBindViewHolder(holder: GroupViewHolder, position: Int) {
-        holder.bind(groups[position], listener)
+        holder.bind(groups[position])
     }
 }

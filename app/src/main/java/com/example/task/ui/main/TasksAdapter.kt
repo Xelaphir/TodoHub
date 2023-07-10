@@ -8,13 +8,51 @@ import com.example.task.R
 import com.example.task.data.task.Task
 import com.example.task.databinding.ItemTaskBinding
 
-class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
+class TasksAdapter(private val listener: TasksListener) : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
 
     class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemTaskBinding.bind(view)
 
-        fun bind(task: Task) {
-            binding.titleTextView.text = task.title
+        fun bind(task: Task, listener: TasksListener) = binding.run {
+            titleTextView.text = task.title
+
+            if (task.description.isNotBlank()) {
+                descriptionTextView.visibility = View.VISIBLE
+                descriptionTextView.text = task.description
+            } else {
+                descriptionTextView.visibility = View.GONE
+            }
+
+            isCompletedCheckBox.isChecked = task.isCompleted
+
+            if (listener !is SubtasksListener) {
+                isFavoriteImageButton.visibility = View.VISIBLE
+                val imageRes = if (task.isFavorite) R.drawable.icon_star else R.drawable.icon_star_border
+                isFavoriteImageButton.setImageResource(imageRes)
+
+                deleteImageButton.visibility = View.GONE
+            } else {
+                isFavoriteImageButton.visibility = View.GONE
+
+                deleteImageButton.visibility = View.VISIBLE
+                deleteImageButton.setOnClickListener { listener.deleteTask(task) }
+            }
+
+            root.setOnClickListener {
+                listener.taskItemPressed(task.id)
+            }
+
+            isCompletedCheckBox.setOnClickListener {
+                task.isCompleted = isCompletedCheckBox.isChecked
+                listener.updateTask(task)
+            }
+
+            isFavoriteImageButton.setOnClickListener {
+                task.isFavorite = !task.isFavorite
+                val image = if (task.isFavorite) R.drawable.icon_star else R.drawable.icon_star_border
+                isFavoriteImageButton.setImageResource(image)
+                listener.updateTask(task)
+            }
         }
     }
 
@@ -33,6 +71,6 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
     override fun getItemCount(): Int = tasks.size
 
     override fun onBindViewHolder(holder: TasksViewHolder, position: Int) {
-       holder.bind(tasks[position])
+       holder.bind(tasks[position], listener)
     }
 }

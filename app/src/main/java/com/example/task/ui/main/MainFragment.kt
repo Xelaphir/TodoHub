@@ -20,6 +20,7 @@ import com.example.task.databinding.CreateTaskDialogBinding
 import com.example.task.databinding.FragmentMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
 import com.google.android.material.tabs.TabLayoutMediator
+import java.util.UUID
 
 class MainFragment : Fragment(), TasksListener {
 
@@ -188,6 +189,14 @@ class MainFragment : Fragment(), TasksListener {
 
     override fun getTaskByGroup(group: Group, adapter: TasksAdapter) {
         viewModel.getTasksByGroup(group, adapter, viewLifecycleOwner)
+    }
+
+    override fun updateTask(task: Task) {
+        viewModel.updateTask(task)
+    }
+
+    override fun taskItemPressed(task: UUID) {
+
     }
 
 }
