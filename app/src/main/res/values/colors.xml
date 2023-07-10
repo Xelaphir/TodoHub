@@ -7,4 +7,5 @@
     <color name="blacked_brown">#402401</color>
     <color name="bleached_silk">#262626</color>
     <color name="bleached_silk_light">#434343</color>
+    <color name="transparent">#00FFFFFF</color>
 </resources>
