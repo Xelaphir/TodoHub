@@ -13,18 +13,18 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import com.example.task.R
 import com.example.task.data.group.Group
+import com.example.task.data.task.Task
 import com.example.task.databinding.CreateGroupDialogBinding
 import com.example.task.databinding.CreateTaskDialogBinding
 import com.example.task.databinding.FragmentMainBinding
 import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.tabs.TabLayout.Tab
 import com.google.android.material.tabs.TabLayoutMediator
 
-class MainFragment : Fragment() {
+class MainFragment : Fragment(), TasksListener {
 
     private lateinit var binding: FragmentMainBinding
     private val viewModel: MainViewModel by activityViewModels()
-    private val groupAdapter: GroupAdapter = GroupAdapter()
+    private val groupAdapter: GroupAdapter = GroupAdapter(this)
     private lateinit var createTaskDialog: BottomSheetDialog
     private lateinit var createGroupDialog: BottomSheetDialog
 
@@ -114,7 +114,19 @@ class MainFragment : Fragment() {
         })
 
         dialogBinding.saveTaskButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Create", Toast.LENGTH_SHORT).show()
+
+            val task = Task(
+                title = dialogBinding.titleEditText.text.toString(),
+                description = dialogBinding.descriptionEditText.text.toString(),
+                isFavorite = dialogBinding.addToFavoriteCheckBox.isChecked,
+                isCompleted = false,
+                parent = null,
+                group = (binding.groupTabLayout.getTabAt(
+                    binding.groupTabLayout.selectedTabPosition
+                )?.text ?: "").toString()
+            )
+            viewModel.addTask(task)
+
             createTaskDialog.dismiss()
         }
         dialogBinding.titleEditText.requestFocus()
@@ -164,6 +176,10 @@ class MainFragment : Fragment() {
         }
 
         createGroupDialog.setContentView(dialogBinding.root)
+    }
+
+    override fun getTaskByGroup(group: Group, adapter: TasksAdapter) {
+        viewModel.getTasksByGroup(group, adapter, viewLifecycleOwner)
     }
 
 }

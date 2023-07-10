@@ -5,6 +5,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.RecyclerView
 import com.example.task.R
+import com.example.task.data.task.Task
 import com.example.task.databinding.ItemTaskBinding
 
 class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
@@ -12,12 +13,12 @@ class TasksAdapter : RecyclerView.Adapter<TasksAdapter.TasksViewHolder>() {
     class TasksViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         private val binding = ItemTaskBinding.bind(view)
 
-        fun bind(task: String) {
-            binding.titleTextView.text = task
+        fun bind(task: Task) {
+            binding.titleTextView.text = task.title
         }
     }
 
-    var tasks: List<String> = listOf()
+    var tasks: List<Task> = listOf()
         set(value) {
             if (value == field) return
             field = value
